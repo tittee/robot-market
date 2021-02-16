@@ -67,3 +67,6 @@ read. Please show us how you would use the language and conventions to structure
 
 Even though we are not giving you the UI design, we believe that as a Frontend Developer you should have some ideas of
 how it should look. You are free to use any styling tools that you want, SASS, css-in-js, or even styled-components.
+
+### Notification by Me
+Ok, Cool.

@@ -1,11 +1,22 @@
-import * as React from 'react';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { store, persistor } from './redux/store';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { PersistGate } from 'redux-persist/lib/integration/react';
+
+import Products from 'pages/Products';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Robot Market</h1>
-      {/*Add your code here*/}
-    </div>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Router>
+          <div className="App">
+            <Products />
+          </div>
+        </Router>
+      </PersistGate>
+    </Provider>
   );
 }
 
