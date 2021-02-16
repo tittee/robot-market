@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { imageMappings } from 'utils/ImageMapping';
 import { formatThb, formatDate } from 'utils/GlobalFunction';
 
 const Image = ({ robot }) => {
-  const onAddToCart = (e) => {
-    console.log(e.target.value);
+  const [stock, setStock] = useState(robot.stock);
+  const [outOfStock, setOutOfStock] = useState(false);
+
+  const onAddToCart = (e) => {        
+
+    if (stock > 1) {
+      setStock(stock - 1);
+    } else {
+      setStock(0);
+      setOutOfStock(true);
+    }    
+
+    if (e.target.value) e.stopPropagation();
   };
 
   return (
@@ -24,7 +35,7 @@ const Image = ({ robot }) => {
           <div className="price font-bold text-blue-700">{formatThb(robot.price)}</div>
           <div className="stock">
             <span className="pr-2">Stock :</span>
-            {robot.stock}
+            {stock}
           </div>
           <div className="createdAt">
             <span className="pr-2">Create Date :</span>
@@ -37,10 +48,11 @@ const Image = ({ robot }) => {
         </div>
         <div className=" text-center">
           <button
-            className="px-4 py-2 border border-transparent bg-blue-700 text-white text-base uppercase rounded hover:bg-blue-400 hover:text-white transition-all"
-            onClick={onAddToCart}
+            className={`${!outOfStock ? 'bg-blue-700 hover:bg-blue-400 hover:text-white' : 'bg-red-500 cursor-not-allowed'} px-4 py-2 border border-transparent text-white text-base uppercase rounded  transition-all`}
+            onClick={onAddToCart}   
+            disabled={outOfStock && 'disabled'}         
           >
-            Add to cart
+            { !outOfStock ? 'Add to cart' : 'Out Of Stock'}
           </button>
         </div>
       </div>
