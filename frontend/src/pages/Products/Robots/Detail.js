@@ -23,14 +23,13 @@ const Detail = ({ robot }) => {
       setQuantity(quantity - 1);      
 
       const newRobot = { ...robot, qty: 1 };
-
-      if ( carts.findIndex((cart) => cart.rid === robot.rid) ) {
+      // FindIndex and update qty to state
+      if (carts.findIndex((cart) => cart.rid === robot.rid)) {
         console.log('a');
       } else {
         console.log('b');
       }
 
-      const newRobot = { ...robot, qty: 1 };
 
       dispatch(setCarts([...carts, newRobot]));
     } else {
