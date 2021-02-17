@@ -5,8 +5,7 @@ const cartSlice = createSlice({
   initialState: {
     isActiveCart: false,
     carts: [],
-    pageCount: 0,
-    offset: 0,
+    itemCart: [],
   },
   reducers: {
     setActiveCart: (state, action) => {
@@ -15,8 +14,11 @@ const cartSlice = createSlice({
     setCarts: (state, action) => {
       state.carts = action.payload;
     },
+    setItemCart: (state, action) => {
+      state.itemCart = action.payload;
+    },
   },
 });
 
-export const { setActiveCart, setCarts } = cartSlice.actions; //setSearchRobot
+export const { setActiveCart, setCarts, setItemCart } = cartSlice.actions; //setSearchRobot
 export default cartSlice.reducer;

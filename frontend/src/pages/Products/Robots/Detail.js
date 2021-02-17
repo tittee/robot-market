@@ -1,29 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { imageMappings } from 'utils/ImageMapping';
 import { formatThb, formatDate } from 'utils/GlobalFunction';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setItemCart } from 'redux/cart';
 
 /* Hook */
-import useCart from 'hooks/useCart';
+// import useCart from 'hooks/useCart';
 
 /* Assets */
 import DefaultImg from 'assets/images/suhas.jpg';
 
 const Detail = ({ robot }) => {
+  const dispatch = useDispatch();
   const [stock, setStock] = useState(robot.stock);
+  const [loading, setLoading] = useState(true);
   const [outOfStock, setOutOfStock] = useState(false);
 
   const [defalutImage] = useState(DefaultImg);
 
+  const itemCart = useSelector((state) => state.cart.itemCart);
 
-  const carts = useSelector((state) => state.cart.carts);
-  const { addToCart } = useCart({
-    robot,
-    carts,
-  });
+  const onAddToCart = (e) => {
+    dispatch(setItemCart([...itemCart, robot]));
 
-  const onAddToCart = async (e) => {
-    await addToCart();
     if (stock > 1) {
       setStock(stock - 1);
     } else {
@@ -34,17 +33,32 @@ const Detail = ({ robot }) => {
     if (e.target.value) e.stopPropagation();
   };
 
+  useEffect(() => {
+    const timer1 = setTimeout(() => setLoading(null), 500);
+
+    return () => {
+      clearTimeout(timer1);
+    };
+  }, [robot.image]);
+
   return (
     <>
       <div className="flex-none w-1/2 md:w-1/3 lg:w-1/4 px-4 mb-8 relative">
         <div className="relative">
           <figure className="block text-center bg-gray-100 mb-4">
+            {loading && imageMappings(robot.image) ? (
+              <div className="bg-gray-100" style={{ height: '120px' }}>
+                Loading.....
+              </div>
+            ) : null}
             <img
               src={imageMappings(robot.image)}
               alt={robot.name}
               className="block object-cover object-top mx-auto"
               style={{ width: defalutImage ? '120px ' : '' }}
-              onError={(e) => (e.target.src = defalutImage)}
+              onError={(e) => {
+                e.target.src = defalutImage;
+              }}
             />
           </figure>
         </div>
