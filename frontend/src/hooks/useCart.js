@@ -1,47 +1,47 @@
-// import { useEffect } from 'react';
-import { useEffect } from 'react';
-import { setCarts } from 'redux/cart';
-// import { useDispatch } from 'react-redux';
+import {  useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setActiveCart, setCarts, setItemCart } from 'redux/cart';
+// import { setStock, setOutOfStock } from 'redux/robot';
 
 let localCart = localStorage.getItem('cart');
 
-const useCart = ({ item }) => {
-  // const dispatch = useDispatch();
-  console.log(item);
-  
+const useCart = ({ initItem, carts}) => {
+  const dispatch = useDispatch();
+  // const [items, setItems] = useState(initItem || []);
+
+  // console.log(items);
+
   useEffect(() => {
     //turn it into js
     localCart = JSON.parse(localCart);
     //load persisted cart into state if it exists
     if (localCart) setCarts(localCart);
   }, []); //the empty array ensures useEffect only runs once
-
+  
   const addToCart = (item) => {
-    //create a copy of our cart state, avoid overwritting existing state
-    // let cartCopy = [...currentCart];
+    if (!item) {
+      return;
+    }
+      
+    dispatch(setCarts([...carts, item]));     
 
-    //assuming we have an ID field in our item
-    
-    
-    //look for item in cart array
-    // const existingItem = currentCart.find((cartItem) => cartItem.rid === item.rid);
-
-    // //if item already exists
-    // if (existingItem) {
-    //   existingItem.quantity += item.quantity; //update item
-    // } else {
-    //   //if item doesn't exist, simply add it
-    //   currentCart.push(item);
-    // }
-
-    // //update app state
-    // setCarts(currentCart);
-
-    // //make cart a string and store in local space
-    // const stringCart = JSON.stringify(currentCart);
-    // localStorage.setItem('cart', stringCart);
-    
   };
+
+  // const addToCart = () => {
+  //   console.log(item);
+  //   dispatch(setActiveCart(true));
+  //   // dispatch(setItemCart(1));
+  //   // dispatch(setCarts());
+    
+  //   // console.log(`${item} - item, ${cartItem} - cart item`);
+  //   // dispatch(setCarts(item));
+  //   // if (item.stock > 1) {
+  //   //   dispatch(setStock(item.stock - 1));
+  //   // } else {
+  //   //   dispatch(setStock(0));
+  //   //   dispatch(setOutOfStock(true));
+  //   // }
+  // };
 
   const deceaseQty = () => {};
 
@@ -51,10 +51,10 @@ const useCart = ({ item }) => {
 
   return {
     addToCart,
+    carts,
     deceaseQty,
     increaseQty,
     removeItem,
   };
 };
-
 export default useCart;

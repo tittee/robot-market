@@ -1,11 +1,15 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+/* Hook */
+// import useCart from 'hooks/useCart';
 
 /* Child Components */
 import Detail from './Detail';
 
-const Robots = ({ searchRobot }) => {  
+const Robots = ({ searchRobot }) => {
   const robots = useSelector((state) => state.robot.robots);
+  // const robot = useSelector((state) => state.robot.robots);
+  // const itemCart = useSelector((state) => state.cart.itemCart);
 
   return (
     <>
@@ -13,9 +17,11 @@ const Robots = ({ searchRobot }) => {
         <div className="flex flex-wrap">
           {searchRobot ? (
             <>
-              {robots.filter((robot) => robot.material.toLowerCase() === searchRobot.toLowerCase() ).map((newRobot) => (
-                <Detail key={newRobot.rid} robot={newRobot} />
-              ))}
+              {robots
+                .filter((robot) => robot.material.toLowerCase() === searchRobot.toLowerCase())
+                .map((newRobot) => (
+                  <Detail key={newRobot.rid} robot={newRobot} />
+                ))}
             </>
           ) : (
             <>

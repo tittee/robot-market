@@ -29,3 +29,7 @@ export const formatDateWithMonthName = (dateString) => {
 export const formatDateTime = (dateString) => {
   return dayjs(dateString).add(getTimezoneOffset, 'hour').format('DD/MM/YYYY, HH:mm');
 };
+
+export const cartQtyTotal = (price, qty) => {
+  return price * qty;
+};

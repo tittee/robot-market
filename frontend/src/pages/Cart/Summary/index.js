@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Summary = () => {
   return (
@@ -9,23 +10,18 @@ const Summary = () => {
           <span className="font-semibold text-sm uppercase">Items 3</span>
           <span className="font-semibold text-sm">590$</span>
         </div>
-        <div>
-          <label className="font-medium inline-block mb-3 text-sm uppercase">Shipping</label>
-          <select className="block p-2 text-gray-600 w-full text-sm">
-            <option>Standard shipping - $10.00</option>
-          </select>
-        </div>
-        <button className="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">
-          Apply
-        </button>
+
         <div className="border-t mt-8">
           <div className="flex font-semibold justify-between py-6 text-sm uppercase">
             <span>Total cost</span>
             <span>$600</span>
           </div>
-          <button className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">
-            Checkout
-          </button>
+          <Link
+            to="/"
+            className="block text-center bg-blue-900 font-semibold hover:bg-blue-500 py-3 text-sm text-white uppercase w-full"
+          >
+            Go back to shopping
+          </Link>
         </div>
       </div>
     </>

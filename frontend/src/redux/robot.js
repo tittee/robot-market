@@ -5,9 +5,10 @@ const robotSlice = createSlice({
   initialState: {
     isActiveRobot: false,
     currentRobot: null,
+    robot: [],
     robots: [],
-    pageCount: 0,
-    offset: 0,
+    stock: 0,
+    outOfStock: false,
   },
   reducers: {
     setActiveRobot: (state, action) => {
@@ -16,17 +17,20 @@ const robotSlice = createSlice({
     setCurrentRobot: (state, action) => {
       state.currentRobot = action.payload;
     },
+    setRobot: (state, action) => {
+      state.robot = action.payload;
+    }, 
     setRobots: (state, action) => {
       state.robots = action.payload;
+    }, 
+    setStock: (state, action) => {
+      state.stock = action.payload;
     },
-    setPageCount: (state, action) => {
-      state.pageCount = action.payload;
-    },
-    setOffset: (state, action) => {
-      state.offset = action.payload;
+    setOutOfStock: (state, action) => {
+      state.outOfStock = action.payload;
     },
   },
 });
 
-export const { setActiveRobot, setCurrentRobot, setRobots, setPageCount, setOffset } = robotSlice.actions; //setSearchRobot
+export const { setActiveRobot, setCurrentRobot, setRobot, setRobots, setStock, setOutOfStock } = robotSlice.actions; //setSearchRobot
 export default robotSlice.reducer;

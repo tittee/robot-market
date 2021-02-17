@@ -15,7 +15,7 @@ const Products = () => {
   const dispatch = useDispatch();
 
   const robots = useSelector((state) => state.robot.robots);
-  const itemCart = useSelector((state) => state.cart.itemCart);
+  const carts = useSelector((state) => state.cart.carts);
 
   const [offset, setOffset] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -103,9 +103,9 @@ const Products = () => {
               </div>
               <div className="flex-none relative">
                 <Link to="/cart">
-                  {itemCart && itemCart.length ? (
+                  {carts && carts.length ? (
                     <div className="absolute w-4 h-4 leading-4 text-sm -right-1 rounded-full text-blue-800 text-center  bg-gray-200">
-                      {itemCart.length}
+                      {carts.length}
                     </div>
                   ) : null}
                   <svg

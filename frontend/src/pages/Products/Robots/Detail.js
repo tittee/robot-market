@@ -1,37 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { imageMappings } from 'utils/ImageMapping';
 import { formatThb, formatDate } from 'utils/GlobalFunction';
-import { useDispatch, useSelector } from 'react-redux';
-import { setItemCart } from 'redux/cart';
+import { useSelector } from 'react-redux';
 
 /* Hook */
-// import useCart from 'hooks/useCart';
+import useCart from 'hooks/useCart';
 
 /* Assets */
 import DefaultImg from 'assets/images/suhas.jpg';
 
 const Detail = ({ robot }) => {
-  const dispatch = useDispatch();
-  const [stock, setStock] = useState(robot.stock);
+  // const dispatch = useDispatch();
+  const stock = useSelector((state) => state.robot.stock);
+  const outOfStock = useSelector((state) => state.robot.outOfStock);
+  const carts = useSelector((state) => state.cart.carts);
+  
+
+  const { 
+    addToCart,    
+  } = useCart({
+    robot,
+    carts
+  });
+
+  
   const [loading, setLoading] = useState(true);
-  const [outOfStock, setOutOfStock] = useState(false);
+  
 
   const [defalutImage] = useState(DefaultImg);
 
-  const itemCart = useSelector((state) => state.cart.itemCart);
 
-  const onAddToCart = (e) => {
-    dispatch(setItemCart([...itemCart, robot]));
+  // const onAddToCart = (e) => {
+  //   dispatch(setItemCart([...itemCart, robot]));
 
-    if (stock > 1) {
-      setStock(stock - 1);
-    } else {
-      setStock(0);
-      setOutOfStock(true);
-    }
+  //   if (stock > 1) {
+  //     setStock(stock - 1);
+  //   } else {
+  //     setStock(0);
+  //     setOutOfStock(true);
+  //   }
 
-    if (e.target.value) e.stopPropagation();
-  };
+  //   if (e.target.value) e.stopPropagation();
+  // };
 
   useEffect(() => {
     const timer1 = setTimeout(() => setLoading(null), 500);
@@ -85,7 +95,7 @@ const Detail = ({ robot }) => {
                 ? 'bg-blue-700 hover:bg-blue-400 hover:text-white'
                 : 'bg-red-500 cursor-not-allowed'
             } px-4 py-2 border border-transparent text-white text-base uppercase rounded  transition-all`}
-            onClick={onAddToCart}
+            onClick={() => addToCart(robot) }
             disabled={outOfStock && 'disabled'}
           >
             {!outOfStock ? 'Add to cart' : 'Out Of Stock'}
