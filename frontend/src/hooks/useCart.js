@@ -1,7 +1,7 @@
 import {  useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setActiveCart, setCarts, setItemCart } from 'redux/cart';
-// import { setStock, setOutOfStock } from 'redux/robot';
+import { setActiveCart, setCarts } from 'redux/cart';
+import { setStock, setOutOfStock } from 'redux/robot';
 
 let localCart = localStorage.getItem('cart');
 

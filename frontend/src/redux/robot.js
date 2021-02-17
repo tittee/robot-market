@@ -6,7 +6,9 @@ const robotSlice = createSlice({
     isActiveRobot: false,
     currentRobot: null,
     robot: [],
-    robots: [],    
+    robots: [],
+    stock: 0,
+    outOfStock: false,
   },
   reducers: {
     setActiveRobot: (state, action) => {
@@ -17,12 +19,18 @@ const robotSlice = createSlice({
     },
     setRobot: (state, action) => {
       state.robot = action.payload;
-    },
+    }, 
     setRobots: (state, action) => {
       state.robots = action.payload;
+    }, 
+    setStock: (state, action) => {      
+      state.stock = action.payload;
+    },
+    setOutOfStock: (state, action) => {
+      state.outOfStock = action.payload;
     },
   },
 });
 
-export const { setActiveRobot, setCurrentRobot, setRobot, setRobots } = robotSlice.actions; //setSearchRobot
+export const { setActiveRobot, setCurrentRobot, setRobot, setRobots, setStock, setOutOfStock } = robotSlice.actions; //setSearchRobot
 export default robotSlice.reducer;
