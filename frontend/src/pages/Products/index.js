@@ -63,7 +63,7 @@ const Products = () => {
     <div className="page">
       <header className="bg-blue-700">
         <div className="container mx-auto py-4">
-          <div className="flex flex-wrap justify-between items-center">
+          <div className="h-10 flex flex-wrap justify-between items-center">
             <div className="flex-1">
               <h1 className="text-xl tracking-wide font-bold text-white">
                 <Link to="/">Robot Marketplace</Link>
