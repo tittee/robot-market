@@ -5,10 +5,9 @@ import { setRobots } from 'redux/robot';
 import { Link } from 'react-router-dom';
 
 /* Component */
+import Loading from 'components/Loading';
 import Robots from './Robots';
 import Pagination from './Pagination';
-
-import Loading from 'components/Loading';
 
 import './styles.scss';
 
@@ -17,20 +16,31 @@ const Products = () => {
   const robots = useSelector((state) => state.robot.robots);
 
   const [offset, setOffset] = useState(0);
-  const [perPage] = useState(20);
   const [pageCount, setPageCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
   const [searchRobot, setSearchRobot] = useState('');
+  const [perPage] = useState(searchRobot ? robots.length : 20);
 
   const initRobots = async () => {
     setLoading(true);
     const res = await getRobots();
     if (res && res.data) {
-      const robotsSlice = res.data.data.slice(offset, offset + perPage);
+      const robotRes = res.data.data;
+
+      if (searchRobot && searchRobot.length) {
+        dispatch(
+          setRobots(
+            robotRes.filter((robot) => robot.material.toLowerCase() === searchRobot.toLowerCase()),
+          ),
+        );
+        setPageCount(0);
+      } else {
+        const robotsSlice = robotRes.slice(offset, offset + perPage);
+        dispatch(setRobots(robotsSlice));
+        setPageCount(Math.ceil(res.data.data.length / perPage));
+      }
       // const robotRes = res.data.data;
-      dispatch(setRobots(robotsSlice));
-      setPageCount(Math.ceil(res.data.data.length / perPage));
     }
     setLoading(false);
   };
@@ -42,20 +52,14 @@ const Products = () => {
 
   const onSearchInputChange = (e) => {
     setSearchRobot(e.target.value);
-    if (e && e.target.value) {
-      dispatch(
-        setRobots(
-          robots.filter((robot) => robot.material.toLowerCase() === searchRobot.toLowerCase()),
-        ),
-      );
-      setPageCount(1);
-      setOffset(0);
-    }
   };
 
   useEffect(() => {
     initRobots();
+    // console.log(`Search, ${searchRobot}!`);
   }, [offset, searchRobot]);
+
+  console.log(pageCount);
 
   return (
     <div className="page">
@@ -123,7 +127,9 @@ const Products = () => {
 
       {!loading ? <Robots searchRobot={searchRobot} /> : <Loading />}
 
-      <Pagination pageCount={pageCount} handlePageChange={handlePageChange} />
+      {pageCount > 0 ? (
+        <Pagination pageCount={pageCount} handlePageChange={handlePageChange} />
+      ) : null}
     </div>
   );
 };
