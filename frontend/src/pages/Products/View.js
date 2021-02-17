@@ -57,6 +57,8 @@ const Products = () => {
     initRobots();
   }, [offset, searchRobot]);
 
+
+const View = () => {
   return (
     <div className="page">
       <header className="bg-blue-700">
@@ -128,4 +130,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default View;

@@ -2,7 +2,7 @@
 // import { setRobots } from 'redux/cart';
 // import { useDispatch } from 'react-redux';
 
-const useCart = ({ rid }) => {
+const useCart = ({ carts }) => {
   // const dispatch = useDispatch();
 
   const addToCart = () => {};

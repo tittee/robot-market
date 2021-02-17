@@ -3,7 +3,7 @@ import React from 'react';
 import Summary from './Summary';
 import ListCart from './ListCart';
 
-const GridView = () => {
+const Cart = () => {
   return (
     <>
       <div className="container mx-auto mt-10">
@@ -16,4 +16,4 @@ const GridView = () => {
   );
 };
 
-export default GridView;
+export default Cart;
