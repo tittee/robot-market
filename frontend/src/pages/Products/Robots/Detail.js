@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { imageMappings } from 'utils/ImageMapping';
 import { formatThb, formatDate } from 'utils/GlobalFunction';
+import { useSelector } from 'react-redux';
 
+/* Hook */
+import useCart from 'hooks/useCart';
+
+/* Assets */
 import DefaultImg from 'assets/images/suhas.jpg';
 
 const Detail = ({ robot }) => {
@@ -9,7 +14,16 @@ const Detail = ({ robot }) => {
   const [outOfStock, setOutOfStock] = useState(false);
 
   const [defalutImage] = useState(DefaultImg);
-  const onAddToCart = (e) => {
+
+
+  const carts = useSelector((state) => state.cart.carts);
+  const { addToCart } = useCart({
+    robot,
+    carts,
+  });
+
+  const onAddToCart = async (e) => {
+    await addToCart();
     if (stock > 1) {
       setStock(stock - 1);
     } else {

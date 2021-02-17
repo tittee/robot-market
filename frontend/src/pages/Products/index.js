@@ -13,6 +13,7 @@ import './styles.scss';
 
 const Products = () => {
   const dispatch = useDispatch();
+
   const robots = useSelector((state) => state.robot.robots);
 
   const [offset, setOffset] = useState(0);
@@ -40,7 +41,6 @@ const Products = () => {
         dispatch(setRobots(robotsSlice));
         setPageCount(Math.ceil(res.data.data.length / perPage));
       }
-      // const robotRes = res.data.data;
     }
     setLoading(false);
   };
@@ -58,8 +58,6 @@ const Products = () => {
     initRobots();
     // console.log(`Search, ${searchRobot}!`);
   }, [offset, searchRobot]);
-
-  console.log(pageCount);
 
   return (
     <div className="page">
