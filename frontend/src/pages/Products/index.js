@@ -15,6 +15,7 @@ const Products = () => {
   const dispatch = useDispatch();
 
   const robots = useSelector((state) => state.robot.robots);
+  const itemCart = useSelector((state) => state.cart.itemCart);
 
   const [offset, setOffset] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -100,8 +101,13 @@ const Products = () => {
                   />
                 </div>
               </div>
-              <div className="flex-none">
+              <div className="flex-none relative">
                 <Link to="/cart">
+                  {itemCart && itemCart.length ? (
+                    <div className="absolute w-4 h-4 leading-4 text-sm -right-1 rounded-full text-blue-800 text-center  bg-gray-200">
+                      {itemCart.length}
+                    </div>
+                  ) : null}
                   <svg
                     className="h-6 w-6 ml-5 text-right text-base text-white "
                     xmlns="http://www.w3.org/2000/svg"
