@@ -23,7 +23,7 @@ const robotSlice = createSlice({
     setRobots: (state, action) => {
       state.robots = action.payload;
     }, 
-    setStock: (state, action) => {
+    setStock: (state, action) => {      
       state.stock = action.payload;
     },
     setOutOfStock: (state, action) => {

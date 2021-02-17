@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
-import { imageMappings } from 'utils/ImageMapping';
 import { formatThb, cartQtyTotal } from 'utils/GlobalFunction';
 
-/* Assets */
-import DefaultImg from 'assets/images/suhas.jpg';
+/* Component Based */
+import ImageRobot from 'components/ImageRobot';
 
 const CartItem = ({ cart }) => {
-  
-  console.log(cart);
-  const [defalutImage] = useState(DefaultImg);
-  const [quantity, setQuantity] = useState(cart.stock); // Hold Props
+  const [quantity, setQuantity] = useState(cart.qty); // Hold Props
+
   const onQtyChange = (e) => {
     if (e && e.target.value >= 0) {
       setQuantity(parseInt(e.target.value));
@@ -22,16 +19,8 @@ const CartItem = ({ cart }) => {
     <>
       <div className="flex items-center hover:bg-gray-100 px-0 py-5">
         <div className="flex w-2/5">
-          <div className="w-20">          
-            <img
-              src={imageMappings(cart.image)}
-              alt={cart.name}
-              className="block object-cover object-top mx-auto h-24"
-              style={{ width: defalutImage ? '120px ' : '' }}
-              onError={(e) => {
-                e.target.src = defalutImage;
-              }}
-            />
+          <div className="w-20">
+            <ImageRobot item={cart} loading={false} heigth={'120px'} />
           </div>
           <div className="flex flex-col justify-between ml-4 flex-grow">
             <span className="font-bold text-sm">{cart.name}</span>
@@ -69,7 +58,9 @@ const CartItem = ({ cart }) => {
           />
         </div>
         <span className="text-center w-1/5 font-semibold text-sm">{formatThb(cart.price)}</span>
-        <span className="text-center w-1/5 font-semibold text-sm">{formatThb(cartQtyTotal(cart.price, cart.stock))}</span>
+        <span className="text-center w-1/5 font-semibold text-sm">
+          {formatThb(cartQtyTotal(cart.price, cart.stock))}
+        </span>
       </div>
     </>
   );
