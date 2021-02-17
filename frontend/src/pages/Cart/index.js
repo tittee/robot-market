@@ -2,7 +2,8 @@ import React from 'react';
 /* Component */
 import Summary from './Summary';
 import ListCart from './ListCart';
-import { Link } from 'react-router-dom';
+import Logo from 'components/Logo';
+
 
 const Cart = () => {
   return (
@@ -11,11 +12,7 @@ const Cart = () => {
         <header className="bg-blue-700">
           <div className="container mx-auto py-4">
             <div className="h-10 flex flex-wrap justify-between items-center">
-              <div className="flex-1">
-                <h1 className="text-xl tracking-wide font-bold text-white">
-                  <Link to="/">Robot Marketplace</Link>
-                </h1>
-              </div>
+              <Logo />
             </div>
           </div>
         </header>
