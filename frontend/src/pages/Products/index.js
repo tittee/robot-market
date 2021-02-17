@@ -2,63 +2,129 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRobots } from 'apis';
 import { setRobots } from 'redux/robot';
+import { Link } from 'react-router-dom';
 
 /* Component */
-import RobotImage from './RobotImage';
+import Robots from './Robots';
+import Pagination from './Pagination';
 
-/* Lib */
-import ReactPaginate from 'react-paginate';
+import Loading from 'components/Loading';
+
+import './styles.scss';
 
 const Products = () => {
   const dispatch = useDispatch();
   const robots = useSelector((state) => state.robot.robots);
+  // const searchRobot = useSelector((state) => state.robot.searchRobot);
 
   const [offset, setOffset] = useState(0);
   const [perPage] = useState(20);
   const [pageCount, setPageCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const [searchRobot, setSearchRobot] = useState('');
 
   const initRobots = async () => {
+    setLoading(true);
     const res = await getRobots();
-    const robotsSlice = res.data.data.slice(offset, offset + perPage);
     if (res && res.data) {
+      const robotsSlice = res.data.data.slice(offset, offset + perPage);
+      // const robotRes = res.data.data;
       dispatch(setRobots(robotsSlice));
       setPageCount(Math.ceil(res.data.data.length / perPage));
     }
+    setLoading(false);
   };
-
-  useEffect(() => {
-    initRobots();
-  }, [offset]);
 
   const handlePageChange = (e) => {
     const selectedPage = e.selected;
     setOffset(selectedPage + 1);
   };
 
-  return (
-    <div className="container mx-auto mt-10">
-      <div className="mx-4 px-4 py-4 mb-10  border rounded bg-blue-300  ">
-        <h1 className="text-6xl font-bold">Robot Marketplace</h1>
-      </div>
-      <div className="flex flex-wrap shadow-md my-10">
-        {robots.map((robot) => (
-          <RobotImage key={robot.rid} robot={robot} />
-        ))}
-      </div>
+  const onSearchInputChange = (e) => {
+    setSearchRobot(e.target.value);
+    if (e && e.target.value) {
+      dispatch(
+        setRobots(
+          robots.filter((robot) => robot.material.toLowerCase() === searchRobot.toLowerCase()),
+        ),
+      );
+      setPageCount(1);
+      setOffset(0);
+    }
+  };
 
-      <ReactPaginate
-        previousLabel={'prev'}
-        nextLabel={'next'}
-        breakLabel={'...'}
-        breakClassName={'break-me'}
-        pageCount={pageCount}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={5}
-        onPageChange={handlePageChange}
-        containerClassName={'pagination'}
-        subContainerClassName={'pages pagination'}
-        activeClassName={'active'}
-      />
+  useEffect(() => {
+    initRobots();
+  }, [offset, searchRobot]);
+
+  return (
+    <div className="page">
+      <header className="bg-blue-700">
+        <div className="container mx-auto py-4">
+          <div className="flex flex-wrap justify-between items-center">
+            <div className="flex-1">
+              <h1 className="text-xl tracking-wide font-bold text-white">
+                <Link to="/">Robot Marketplace</Link>
+              </h1>
+            </div>
+            <div className="flex-auto flex flex-wrap items-center">
+              <div className="flex-auto">
+                <div className="flex flex-nowrap flex-row">
+                  {searchRobot && (
+                    <button onClick={() => setSearchRobot('')}>
+                      <svg
+                        className="h-11 w-10 text-centet text-white rounded-l bg-red-400 border-b-2 border-gray-200 active:border-black"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  )}
+
+                  <input
+                    type="text"
+                    placeholder="Search robots..."
+                    className="mt-0 block w-full px-2 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black"
+                    value={searchRobot}
+                    onChange={onSearchInputChange}
+                  />
+                </div>
+              </div>
+              <div className="flex-none">
+                <Link to="/cart">
+                  <svg
+                    className="h-6 w-6 ml-5 text-right text-base text-white "
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {!loading ? <Robots searchRobot={searchRobot} /> : <Loading />}
+
+      <Pagination pageCount={pageCount} handlePageChange={handlePageChange} />
     </div>
   );
 };
