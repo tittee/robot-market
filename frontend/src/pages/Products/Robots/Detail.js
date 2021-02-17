@@ -20,7 +20,7 @@ const Detail = ({ robot }) => {
 
   const onAddToCart = () => {
     if (quantity > 1) {
-      setQuantity(quantity - 1);      
+      setQuantity(quantity - 1);
 
       const newRobot = { ...robot, qty: 1 };
       // FindIndex and update qty to state
@@ -30,6 +30,7 @@ const Detail = ({ robot }) => {
         console.log('b');
       }
 
+      // Bugs should try to useCart
 
       dispatch(setCarts([...carts, newRobot]));
     } else {
