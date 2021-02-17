@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { formatThb, formatDate } from 'utils/GlobalFunction';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 /* Hook */
 import useCart from 'hooks/useCart';
-import ImageRobot from './ImageRobot';
+import ImageRobot from 'components/ImageRobot';
 
-const Detail = ({ robot }) => {  
-  const [outOfStock] = useState(robot.stock > 0 ? false : true);
-  
+const Detail = ({ robot }) => {
   const carts = useSelector((state) => state.cart.carts);
+
+  const [outOfStock] = useState(robot.stock > 0 ? false : true);
   const [loading, setLoading] = useState(true);
 
   const { addToCart } = useCart({
@@ -19,7 +19,7 @@ const Detail = ({ robot }) => {
 
   useEffect(() => {
     const timer1 = setTimeout(() => setLoading(null), 500);
-      
+
     return () => {
       clearTimeout(timer1);
     };
@@ -29,7 +29,7 @@ const Detail = ({ robot }) => {
     <>
       <div className="flex-none w-1/2 md:w-1/3 lg:w-1/4 px-4 mb-8 relative">
         <div className="relative">
-          <ImageRobot robot={robot} loading={loading} />
+          <ImageRobot item={robot} loading={loading} heigth={'120px'} />
         </div>
         <div className="text-center mb-6">
           <h2 className="text-black text-base font-medium uppercase mb-4">{robot.name}</h2>

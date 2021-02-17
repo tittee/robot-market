@@ -31,5 +31,5 @@ export const formatDateTime = (dateString) => {
 };
 
 export const cartQtyTotal = (price, qty) => {
-  return price * qty;
+  return (price * qty).toFixed(2);
 };
