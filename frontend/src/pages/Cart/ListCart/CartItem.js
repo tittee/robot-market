@@ -5,7 +5,7 @@ import { formatThb, cartQtyTotal } from 'utils/GlobalFunction';
 import ImageRobot from 'components/ImageRobot';
 
 const CartItem = ({ cart }) => {
-  const [quantity, setQuantity] = useState(cart.stock); // Hold Props
+  const [quantity, setQuantity] = useState(cart.qty); // Hold Props
 
   const onQtyChange = (e) => {
     if (e && e.target.value >= 0) {

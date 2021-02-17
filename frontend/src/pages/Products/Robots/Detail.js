@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { formatThb, formatDate } from 'utils/GlobalFunction';
 import { useDispatch, useSelector } from 'react-redux';
-
 /* Redux */
 import { setCarts } from 'redux/cart';
+/* Hook */
+// import useCart from 'hooks/useCart';
 
 /* Based Component */
 import ImageRobot from 'components/ImageRobot';
@@ -11,21 +12,31 @@ import ImageRobot from 'components/ImageRobot';
 const Detail = ({ robot }) => {
   const dispatch = useDispatch();
   const carts = useSelector((state) => state.cart.carts);
+  // const { addToCart } = useCart({ robot, carts });
 
   const [quantity, setQuantity] = useState(robot.stock);
   const [outOfStock, setOutOfStock] = useState(robot.stock > 0 ? false : true);
-  const [loading, setLoading] = useState(true);  
+  const [loading, setLoading] = useState(true);
 
   const onAddToCart = () => {
-    
     if (quantity > 1) {
-      setQuantity(quantity - 1);
-      dispatch(setCarts([...carts, robot]));    
+      setQuantity(quantity - 1);      
+
+      const newRobot = { ...robot, qty: 1 };
+
+      if ( carts.findIndex((cart) => cart.rid === robot.rid) ) {
+        console.log('a');
+      } else {
+        console.log('b');
+      }
+
+      const newRobot = { ...robot, qty: 1 };
+
+      dispatch(setCarts([...carts, newRobot]));
     } else {
       setQuantity(0);
       setOutOfStock(true);
     }
-    
   };
 
   useEffect(() => {
@@ -46,7 +57,7 @@ const Detail = ({ robot }) => {
           <h2 className="text-black text-base font-medium uppercase mb-4">{robot.name}</h2>
           <div className="price font-bold text-blue-700">{formatThb(robot.price)}</div>
           <div className="stock">
-            <span className="pr-2">Stock :</span> { quantity >= 0  ? quantity : robot.stock}
+            <span className="pr-2">Stock :</span> {quantity >= 0 ? quantity : robot.stock}
           </div>
           <div className="createdAt">
             <span className="pr-2">Create Date :</span>
