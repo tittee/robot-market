@@ -57,7 +57,6 @@ const Products = () => {
 
   useEffect(() => {
     initRobots();
-    // console.log(`Search, ${searchRobot}!`);
   }, [offset, searchRobot]);
 
   return (
