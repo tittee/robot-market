@@ -86,6 +86,6 @@
       "error",
       "never"
     ],
-    "no-unused-vars": "error"
+    "no-unused-vars": "warn"
   }
 }

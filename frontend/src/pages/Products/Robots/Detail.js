@@ -1,36 +1,74 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { imageMappings } from 'utils/ImageMapping';
 import { formatThb, formatDate } from 'utils/GlobalFunction';
+import { useSelector } from 'react-redux';
 
+/* Hook */
+import useCart from 'hooks/useCart';
+
+/* Assets */
 import DefaultImg from 'assets/images/suhas.jpg';
 
 const Detail = ({ robot }) => {
-  const [stock, setStock] = useState(robot.stock);
-  const [outOfStock, setOutOfStock] = useState(false);
+  // const dispatch = useDispatch();
+  const stock = useSelector((state) => state.robot.stock);
+  const outOfStock = useSelector((state) => state.robot.outOfStock);
+  const carts = useSelector((state) => state.cart.carts);
+  
+
+  const { 
+    addToCart,    
+  } = useCart({
+    robot,
+    carts
+  });
+
+  
+  const [loading, setLoading] = useState(true);
+  
 
   const [defalutImage] = useState(DefaultImg);
-  const onAddToCart = (e) => {
-    if (stock > 1) {
-      setStock(stock - 1);
-    } else {
-      setStock(0);
-      setOutOfStock(true);
-    }
 
-    if (e.target.value) e.stopPropagation();
-  };
+
+  // const onAddToCart = (e) => {
+  //   dispatch(setItemCart([...itemCart, robot]));
+
+  //   if (stock > 1) {
+  //     setStock(stock - 1);
+  //   } else {
+  //     setStock(0);
+  //     setOutOfStock(true);
+  //   }
+
+  //   if (e.target.value) e.stopPropagation();
+  // };
+
+  useEffect(() => {
+    const timer1 = setTimeout(() => setLoading(null), 500);
+
+    return () => {
+      clearTimeout(timer1);
+    };
+  }, [robot.image]);
 
   return (
     <>
       <div className="flex-none w-1/2 md:w-1/3 lg:w-1/4 px-4 mb-8 relative">
         <div className="relative">
           <figure className="block text-center bg-gray-100 mb-4">
+            {loading && imageMappings(robot.image) ? (
+              <div className="bg-gray-100" style={{ height: '120px' }}>
+                Loading.....
+              </div>
+            ) : null}
             <img
               src={imageMappings(robot.image)}
               alt={robot.name}
               className="block object-cover object-top mx-auto"
               style={{ width: defalutImage ? '120px ' : '' }}
-              onError={(e) => (e.target.src = defalutImage)}
+              onError={(e) => {
+                e.target.src = defalutImage;
+              }}
             />
           </figure>
         </div>
@@ -57,7 +95,7 @@ const Detail = ({ robot }) => {
                 ? 'bg-blue-700 hover:bg-blue-400 hover:text-white'
                 : 'bg-red-500 cursor-not-allowed'
             } px-4 py-2 border border-transparent text-white text-base uppercase rounded  transition-all`}
-            onClick={onAddToCart}
+            onClick={() => addToCart(robot) }
             disabled={outOfStock && 'disabled'}
           >
             {!outOfStock ? 'Add to cart' : 'Out Of Stock'}

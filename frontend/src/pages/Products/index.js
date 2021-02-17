@@ -5,33 +5,43 @@ import { setRobots } from 'redux/robot';
 import { Link } from 'react-router-dom';
 
 /* Component */
+import Loading from 'components/Loading';
 import Robots from './Robots';
 import Pagination from './Pagination';
-
-import Loading from 'components/Loading';
 
 import './styles.scss';
 
 const Products = () => {
   const dispatch = useDispatch();
+
   const robots = useSelector((state) => state.robot.robots);
-  // const searchRobot = useSelector((state) => state.robot.searchRobot);
+  const carts = useSelector((state) => state.cart.carts);
 
   const [offset, setOffset] = useState(0);
-  const [perPage] = useState(20);
   const [pageCount, setPageCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
   const [searchRobot, setSearchRobot] = useState('');
+  const [perPage] = useState(searchRobot ? robots.length : 20);
 
   const initRobots = async () => {
     setLoading(true);
     const res = await getRobots();
     if (res && res.data) {
-      const robotsSlice = res.data.data.slice(offset, offset + perPage);
-      // const robotRes = res.data.data;
-      dispatch(setRobots(robotsSlice));
-      setPageCount(Math.ceil(res.data.data.length / perPage));
+      const robotRes = res.data.data;
+
+      if (searchRobot && searchRobot.length) {
+        dispatch(
+          setRobots(
+            robotRes.filter((robot) => robot.material.toLowerCase() === searchRobot.toLowerCase()),
+          ),
+        );
+        setPageCount(0);
+      } else {
+        const robotsSlice = robotRes.slice(offset, offset + perPage);
+        dispatch(setRobots(robotsSlice));
+        setPageCount(Math.ceil(res.data.data.length / perPage));
+      }
     }
     setLoading(false);
   };
@@ -43,26 +53,18 @@ const Products = () => {
 
   const onSearchInputChange = (e) => {
     setSearchRobot(e.target.value);
-    if (e && e.target.value) {
-      dispatch(
-        setRobots(
-          robots.filter((robot) => robot.material.toLowerCase() === searchRobot.toLowerCase()),
-        ),
-      );
-      setPageCount(1);
-      setOffset(0);
-    }
   };
 
   useEffect(() => {
     initRobots();
+    // console.log(`Search, ${searchRobot}!`);
   }, [offset, searchRobot]);
 
   return (
     <div className="page">
       <header className="bg-blue-700">
         <div className="container mx-auto py-4">
-          <div className="flex flex-wrap justify-between items-center">
+          <div className="h-10 flex flex-wrap justify-between items-center">
             <div className="flex-1">
               <h1 className="text-xl tracking-wide font-bold text-white">
                 <Link to="/">Robot Marketplace</Link>
@@ -99,8 +101,13 @@ const Products = () => {
                   />
                 </div>
               </div>
-              <div className="flex-none">
+              <div className="flex-none relative">
                 <Link to="/cart">
+                  {carts && carts.length ? (
+                    <div className="absolute w-4 h-4 leading-4 text-sm -right-1 rounded-full text-blue-800 text-center  bg-gray-200">
+                      {carts.length}
+                    </div>
+                  ) : null}
                   <svg
                     className="h-6 w-6 ml-5 text-right text-base text-white "
                     xmlns="http://www.w3.org/2000/svg"
@@ -124,7 +131,9 @@ const Products = () => {
 
       {!loading ? <Robots searchRobot={searchRobot} /> : <Loading />}
 
-      <Pagination pageCount={pageCount} handlePageChange={handlePageChange} />
+      {pageCount > 0 ? (
+        <Pagination pageCount={pageCount} handlePageChange={handlePageChange} />
+      ) : null}
     </div>
   );
 };
