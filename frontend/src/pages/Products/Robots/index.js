@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 /* Child Components */
-import Image from './Image';
+import Detail from './Detail';
 
 const Robots = ({ searchRobot }) => {  
   const robots = useSelector((state) => state.robot.robots);
@@ -14,13 +14,13 @@ const Robots = ({ searchRobot }) => {
           {searchRobot ? (
             <>
               {robots.filter((robot) => robot.material.toLowerCase() === searchRobot.toLowerCase() ).map((newRobot) => (
-                <Image key={newRobot.rid} robot={newRobot} />
+                <Detail key={newRobot.rid} robot={newRobot} />
               ))}
             </>
           ) : (
             <>
               {robots.map((robot) => (
-                <Image key={robot.rid} robot={robot} />
+                <Detail key={robot.rid} robot={robot} />
               ))}
             </>
           )}

@@ -4,20 +4,18 @@ import { formatThb, formatDate } from 'utils/GlobalFunction';
 
 import DefaultImg from 'assets/images/suhas.jpg';
 
-const Image = ({ robot }) => {
-  
+const Detail = ({ robot }) => {
   const [stock, setStock] = useState(robot.stock);
   const [outOfStock, setOutOfStock] = useState(false);
 
   const [defalutImage] = useState(DefaultImg);
-  const onAddToCart = (e) => {        
-
+  const onAddToCart = (e) => {
     if (stock > 1) {
       setStock(stock - 1);
     } else {
       setStock(0);
       setOutOfStock(true);
-    }    
+    }
 
     if (e.target.value) e.stopPropagation();
   };
@@ -31,8 +29,8 @@ const Image = ({ robot }) => {
               src={imageMappings(robot.image)}
               alt={robot.name}
               className="block object-cover object-top mx-auto"
-              style={{ width: defalutImage? '120px ': '' }}
-              onError={(e) => ( e.target.src = defalutImage )}
+              style={{ width: defalutImage ? '120px ' : '' }}
+              onError={(e) => (e.target.src = defalutImage)}
             />
           </figure>
         </div>
@@ -70,4 +68,4 @@ const Image = ({ robot }) => {
   );
 };
 
-export default Image;
+export default Detail;

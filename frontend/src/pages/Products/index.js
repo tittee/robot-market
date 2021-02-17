@@ -31,7 +31,6 @@ const Products = () => {
       const robotsSlice = res.data.data.slice(offset, offset + perPage);
       // const robotRes = res.data.data;
       dispatch(setRobots(robotsSlice));
-
       setPageCount(Math.ceil(res.data.data.length / perPage));
     }
     setLoading(false);
@@ -50,7 +49,6 @@ const Products = () => {
           robots.filter((robot) => robot.material.toLowerCase() === searchRobot.toLowerCase()),
         ),
       );
-      // console.log(robots);
       setPageCount(1);
       setOffset(0);
     }
@@ -59,8 +57,6 @@ const Products = () => {
   useEffect(() => {
     initRobots();
   }, [offset, searchRobot]);
-
-  console.log(pageCount);
 
   return (
     <div className="page">
@@ -74,13 +70,34 @@ const Products = () => {
             </div>
             <div className="flex-auto flex flex-wrap items-center">
               <div className="flex-auto">
-                <input
-                  type="text"
-                  placeholder="Search robots..."
-                  className="mt-0 block w-full px-2 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black"
-                  value={searchRobot}
-                  onChange={onSearchInputChange}
-                />
+                <div className="flex flex-nowrap flex-row">
+                  {searchRobot && (
+                    <button onClick={() => setSearchRobot('')}>
+                      <svg
+                        className="h-11 w-10 text-centet text-white rounded-l bg-red-400 border-b-2 border-gray-200 active:border-black"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  )}
+
+                  <input
+                    type="text"
+                    placeholder="Search robots..."
+                    className="mt-0 block w-full px-2 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black"
+                    value={searchRobot}
+                    onChange={onSearchInputChange}
+                  />
+                </div>
               </div>
               <div className="flex-none">
                 <Link to="/cart">
