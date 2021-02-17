@@ -8,35 +8,59 @@ import { Link } from 'react-router-dom';
 import Robots from './Robots';
 import Pagination from './Pagination';
 
+import Loading from 'components/Loading';
+
 import './styles.scss';
 
 const Products = () => {
   const dispatch = useDispatch();
   const robots = useSelector((state) => state.robot.robots);
+  // const searchRobot = useSelector((state) => state.robot.searchRobot);
 
   const [offset, setOffset] = useState(0);
   const [perPage] = useState(20);
   const [pageCount, setPageCount] = useState(0);
+  const [loading, setLoading] = useState(false);
 
-  const [search, setSearch] = useState('');
+  const [searchRobot, setSearchRobot] = useState('');
 
   const initRobots = async () => {
+    setLoading(true);
     const res = await getRobots();
-    const robotsSlice = res.data.data.slice(offset, offset + perPage);
     if (res && res.data) {
+      const robotsSlice = res.data.data.slice(offset, offset + perPage);
+      // const robotRes = res.data.data;
       dispatch(setRobots(robotsSlice));
+
       setPageCount(Math.ceil(res.data.data.length / perPage));
     }
+    setLoading(false);
   };
-
-  useEffect(() => {
-    initRobots();
-  }, [offset]);
 
   const handlePageChange = (e) => {
     const selectedPage = e.selected;
     setOffset(selectedPage + 1);
   };
+
+  const onSearchInputChange = (e) => {
+    setSearchRobot(e.target.value);
+    if (e && e.target.value) {
+      dispatch(
+        setRobots(
+          robots.filter((robot) => robot.material.toLowerCase() === searchRobot.toLowerCase()),
+        ),
+      );
+      // console.log(robots);
+      setPageCount(1);
+      setOffset(0);
+    }
+  };
+
+  useEffect(() => {
+    initRobots();
+  }, [offset, searchRobot]);
+
+  console.log(pageCount);
 
   return (
     <div className="page">
@@ -54,14 +78,14 @@ const Products = () => {
                   type="text"
                   placeholder="Search robots..."
                   className="mt-0 block w-full px-2 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  value={searchRobot}
+                  onChange={onSearchInputChange}
                 />
               </div>
               <div className="flex-none">
                 <Link to="/cart">
                   <svg
-                    className="h-6 w-6 ml-5 text-right text-base text-white"
+                    className="h-6 w-6 ml-5 text-right text-base text-white "
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -80,7 +104,8 @@ const Products = () => {
           </div>
         </div>
       </header>
-      <Robots robots={robots} />
+
+      {!loading ? <Robots searchRobot={searchRobot} /> : <Loading />}
 
       <Pagination pageCount={pageCount} handlePageChange={handlePageChange} />
     </div>

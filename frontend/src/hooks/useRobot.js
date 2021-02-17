@@ -3,7 +3,7 @@ import { getRobots } from 'apis';
 import { setRobots } from 'redux/robot';
 import { useDispatch } from 'react-redux';
 
-const useRobot = ({ rid }) => {
+const useRobot = ({ rid, search }) => {
   const dispatch = useDispatch();
 
   const createNewRobot = () => {};
@@ -12,6 +12,10 @@ const useRobot = ({ rid }) => {
 
   const editRobot = async () => {};
 
+  const searchRobot = async () => {
+    await initRobots(search);
+    // Array Filter only
+  };
   const initRobots = async () => {
     const res = await getRobots();
     if (res && res.data) {
@@ -27,6 +31,7 @@ const useRobot = ({ rid }) => {
     createNewRobot,
     deleteCurrentRobot,
     editRobot,
+    searchRobot,
     initRobots,
   };
 };

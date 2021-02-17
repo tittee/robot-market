@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { imageMappings } from 'utils/ImageMapping';
 import { formatThb, formatDate } from 'utils/GlobalFunction';
 
+import DefaultImg from 'assets/images/suhas.jpg';
+
 const Image = ({ robot }) => {
+  
   const [stock, setStock] = useState(robot.stock);
   const [outOfStock, setOutOfStock] = useState(false);
 
+  const [defalutImage] = useState(DefaultImg);
   const onAddToCart = (e) => {        
 
     if (stock > 1) {
@@ -27,6 +31,8 @@ const Image = ({ robot }) => {
               src={imageMappings(robot.image)}
               alt={robot.name}
               className="block object-cover object-top mx-auto"
+              style={{ width: defalutImage? '120px ': '' }}
+              onError={(e) => ( e.target.src = defalutImage )}
             />
           </figure>
         </div>
@@ -48,11 +54,15 @@ const Image = ({ robot }) => {
         </div>
         <div className=" text-center">
           <button
-            className={`${!outOfStock ? 'bg-blue-700 hover:bg-blue-400 hover:text-white' : 'bg-red-500 cursor-not-allowed'} px-4 py-2 border border-transparent text-white text-base uppercase rounded  transition-all`}
-            onClick={onAddToCart}   
-            disabled={outOfStock && 'disabled'}         
+            className={`${
+              !outOfStock
+                ? 'bg-blue-700 hover:bg-blue-400 hover:text-white'
+                : 'bg-red-500 cursor-not-allowed'
+            } px-4 py-2 border border-transparent text-white text-base uppercase rounded  transition-all`}
+            onClick={onAddToCart}
+            disabled={outOfStock && 'disabled'}
           >
-            { !outOfStock ? 'Add to cart' : 'Out Of Stock'}
+            {!outOfStock ? 'Add to cart' : 'Out Of Stock'}
           </button>
         </div>
       </div>
