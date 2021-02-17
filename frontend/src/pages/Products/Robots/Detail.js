@@ -10,38 +10,17 @@ import useCart from 'hooks/useCart';
 import DefaultImg from 'assets/images/suhas.jpg';
 
 const Detail = ({ robot }) => {
-  // const dispatch = useDispatch();
   const stock = useSelector((state) => state.robot.stock);
   const outOfStock = useSelector((state) => state.robot.outOfStock);
   const carts = useSelector((state) => state.cart.carts);
-  
-
-  const { 
-    addToCart,    
-  } = useCart({
-    robot,
-    carts
-  });
-
-  
   const [loading, setLoading] = useState(true);
-  
-
   const [defalutImage] = useState(DefaultImg);
 
+  const { addToCart } = useCart({
+    robot,
+    carts,
+  });
 
-  // const onAddToCart = (e) => {
-  //   dispatch(setItemCart([...itemCart, robot]));
-
-  //   if (stock > 1) {
-  //     setStock(stock - 1);
-  //   } else {
-  //     setStock(0);
-  //     setOutOfStock(true);
-  //   }
-
-  //   if (e.target.value) e.stopPropagation();
-  // };
 
   useEffect(() => {
     const timer1 = setTimeout(() => setLoading(null), 500);
@@ -95,7 +74,7 @@ const Detail = ({ robot }) => {
                 ? 'bg-blue-700 hover:bg-blue-400 hover:text-white'
                 : 'bg-red-500 cursor-not-allowed'
             } px-4 py-2 border border-transparent text-white text-base uppercase rounded  transition-all`}
-            onClick={() => addToCart(robot) }
+            onClick={() => addToCart(robot)}
             disabled={outOfStock && 'disabled'}
           >
             {!outOfStock ? 'Add to cart' : 'Out Of Stock'}

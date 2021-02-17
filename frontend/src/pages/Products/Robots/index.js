@@ -1,15 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-/* Hook */
-// import useCart from 'hooks/useCart';
 
 /* Child Components */
 import Detail from './Detail';
 
 const Robots = ({ searchRobot }) => {
   const robots = useSelector((state) => state.robot.robots);
-  // const robot = useSelector((state) => state.robot.robots);
-  // const itemCart = useSelector((state) => state.cart.itemCart);
 
   return (
     <>

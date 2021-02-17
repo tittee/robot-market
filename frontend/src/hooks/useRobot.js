@@ -4,21 +4,10 @@
 // import { useDispatch } from 'react-redux';
 
 const useRobot = ({ search, offset }) => {
-    
+  const searchRobot = async () => {};
+
+  const initRobots = async () => {};
   
-
-  const searchRobot = async () => {
-    
-  };
-  
-  const initRobots = async () => {
-        
-  };
-
-  // useEffect(() => {
-  //   initRobots();
-  // }, []);
-
   return {
     searchRobot,
     initRobots,
